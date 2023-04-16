@@ -1,22 +1,40 @@
-//Gravidade
-if !place_meeting(x, y + 1, obj_wall){
-	y += vspd
-}
-else{
-	//Pulo
-	if keyboard_check_pressed(vk_space){
-		i = y
-		while !place_meeting(x, y - 1, obj_wall) and y != i - 48{
-			y --
-		}
-}
+// apply gravity
+vsp += gravity
+
+// horizontal movement
+hsp = 0;
+if (keyboard_check(vk_left) or keyboard_check(ord("A"))) hsp -= movespeed;
+if (keyboard_check(vk_right) or keyboard_check(ord("D"))) hsp += movespeed;
+
+// jump
+if (onGround && keyboard_check_pressed(vk_space) && !place_meeting(x, y - 1, obj_wall)) {
+    vsp = -jumpspeed;
 }
 
-//Movimentação e Colisão
-if keyboard_check(vk_right) and !place_meeting(x + 1, y, obj_wall) or keyboard_check(ord("D")) and !place_meeting(x + 1, y, obj_wall){
-	x = x + hspd
+// apply friction
+hsp *= friction;
+
+// move horizontally
+x += hsp;
+
+// check for collisions horizontally
+if (place_meeting(x, y, obj_wall)) {
+    while (!place_free(x+sign(hsp),y)) { 
+        x += sign(hsp);
+    }
+    hsp = 0;
 }
 
-if keyboard_check(vk_left) and !place_meeting(x - 1, y, obj_wall) or keyboard_check(ord("A")) and !place_meeting(x - 1, y, obj_wall){
-	x = x - hspd
+// move vertically
+y += vsp;
+
+// check for collisions vertically
+if (place_meeting(x, y + 1, obj_wall)) {
+    while (place_meeting(x, y + 1, obj_wall)) {
+        y -= 1;
+    }
+    vsp = 0;
+    onGround = true;
+} else {
+    onGround = false;
 }
