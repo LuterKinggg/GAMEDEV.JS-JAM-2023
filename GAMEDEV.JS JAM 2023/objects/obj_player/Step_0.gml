@@ -1,5 +1,7 @@
 // aplicar gravidade
-vsp += gravity;
+if (onGround == false) {
+	vsp += gravity
+}
 
 // movimento horizontal
 hsp = 0;
@@ -31,22 +33,19 @@ if (place_meeting(x, y, obj_wall)) {
 }
 
 // atualizar velocidade vertical
-y += vsp;
+
 
 // colisão vertical
-if (place_meeting(x, y + vsp, obj_wall)) {
-    while (!place_free(x, y+sign(vsp))) {
-        y += sign(vsp);
-    }
+if (place_meeting(x, y + 1, obj_wall)) {
     vsp = 0;
+} else {
+	
 }
+
+
 
 // testar se está no chão
 if (place_meeting(x, y + 1, obj_wall)) {
-	while (place_meeting(x, y, obj_wall)) {
-		y --;
-	}
-    vsp = 0;
     onGround = true;
 } else {
     onGround = false;
