@@ -1,23 +1,28 @@
-// apply gravity
-vsp += gravity
+// aplicar gravidade
+vsp += gravity;
 
-// horizontal movement
+// movimento horizontal
 hsp = 0;
-if (keyboard_check(vk_left) or keyboard_check(ord("A"))) hsp -= movespeed;
-if (keyboard_check(vk_right) or keyboard_check(ord("D"))) hsp += movespeed;
+if (keyboard_check(vk_left) or keyboard_check(ord("A"))) {
+	hsp -= movespeed;
+}
 
-// jump
+if (keyboard_check(vk_right) or keyboard_check(ord("D"))) {
+	hsp += movespeed;
+}
+
+// pulo
 if (onGround && keyboard_check_pressed(vk_space) && !place_meeting(x, y - 1, obj_wall)) {
     vsp = -jumpspeed;
 }
 
-// apply friction
+// aplicar atrito
 hsp *= friction;
 
-// move horizontally
+// atualizar velocidade horizontal
 x += hsp;
 
-// check for collisions horizontally
+// colisão horizontal
 if (place_meeting(x, y, obj_wall)) {
     while (!place_free(x+sign(hsp),y)) { 
         x += sign(hsp);
@@ -25,14 +30,22 @@ if (place_meeting(x, y, obj_wall)) {
     hsp = 0;
 }
 
-// move vertically
+// atualizar velocidade vertical
 y += vsp;
 
-// check for collisions vertically
-if (place_meeting(x, y + 1, obj_wall)) {
-    while (place_meeting(x, y + 1, obj_wall)) {
-        y -= 1;
+// colisão vertical
+if (place_meeting(x, y + vsp, obj_wall)) {
+    while (!place_free(x, y+sign(vsp))) {
+        y += sign(vsp);
     }
+    vsp = 0;
+}
+
+// testar se está no chão
+if (place_meeting(x, y + 1, obj_wall)) {
+	while (place_meeting(x, y, obj_wall)) {
+		y --;
+	}
     vsp = 0;
     onGround = true;
 } else {
