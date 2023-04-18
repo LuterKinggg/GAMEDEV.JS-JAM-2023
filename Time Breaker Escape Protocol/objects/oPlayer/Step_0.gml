@@ -93,6 +93,11 @@ if dash_timer > 0 {
 	applygrav = false;
 	vspd = 0;
 	x += hspd * 3;
+	if place_meeting(x, y, oWall){
+		while place_meeting(x, y, oWall){
+			x -= hspd;
+		}
+	}
     // dimiinui a duração do dash
     dash_timer--;
     // acado o dash se acabar o tempo
