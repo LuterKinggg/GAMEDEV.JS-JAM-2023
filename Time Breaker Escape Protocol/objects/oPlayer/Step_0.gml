@@ -70,48 +70,40 @@ x += hspd;//---Move o personagem horizontalmente depois de calcular sua velocida
 #endregion
 
 #region // dash
-if keyboard_check(ord("D")) and keyboard_check_pressed(vk_shift){
-	myd = 0;
-	x += dash;
+// check for dash input
+if keyboard_check_pressed(vk_shift) && dash_ready {
+    // set the dash timer
+    dash_timer = dash_duration;
+    // set the dash direction
+    if keyboard_check(vk_right) {
+        hspd = dash_speed;
+    } else if keyboard_check(vk_left) {
+        hspd = -dash_speed;
+    }
+    // set the dash cooldown
+    dash_ready = false;
+    alarm[0] = dash_cooldown;
 }
 
-if keyboard_check(ord("A")) and keyboard_check_pressed(vk_shift){
-	myd = 180;
-	x -= dash;
+// update dash
+if dash_timer > 0 {
+    // move the player
+    x += hspd;
+    // decrease the dash timer
+    dash_timer--;
+    // end the dash if the timer is up
+    if dash_timer <= 0 {
+        hspd = 0;
+    }
 }
 
-if keyboard_check(ord("W")) and keyboard_check_pressed(vk_shift){
-	myd = 90;
-	y -= dash;
+// update dash cooldown
+if !dash_ready {
+    // decrease the cooldown timer
+    alarm[0]--;
+    // reset the dash if the cooldown is up
+    if alarm[0] <= 0 {
+        dash_ready = true;
+    }
 }
-
-if keyboard_check(ord("S")) and keyboard_check_pressed(vk_shift){
-	myd = 270;
-	y -= dash;
-}
-
-if keyboard_check(ord("D")) and keyboard_check(ord("W")) and keyboard_check_pressed(vk_shift){
-	myd = 45;
-	x += sen;
-	y -= sen;
-}
-
-if keyboard_check(ord("D")) and keyboard_check(ord("S")) and keyboard_check_pressed(vk_shift){
-	myd = 315;
-	x += sen;
-	y += sen;
-}
-
-if keyboard_check(ord("A")) and keyboard_check(ord("W")) and keyboard_check_pressed(vk_shift){
-	myd = 135;
-	x -= sen;
-	y -= sen;
-}
-
-if keyboard_check(ord("A")) and keyboard_check(ord("S")) and keyboard_check_pressed(vk_shift){
-	myd = 225;
-	x -= sen;
-	y += sen;
-}
-
 #endregion
