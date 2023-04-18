@@ -16,7 +16,9 @@ foot = (y + (sprite_height/2));
 
 #region //Movimento Vertical
 ///---------MOVIMENTO VERTICAL---------
-vspd += grav;//---Aplica a gravidade ao personagem---
+if applygrav == true {
+	vspd += grav;//---Aplica a gravidade ao personagem---
+}
 
 if onGround{//---Faz o jogador poder pular quando no chão---
 canJump = true;
@@ -70,38 +72,41 @@ x += hspd;//---Move o personagem horizontalmente depois de calcular sua velocida
 #endregion
 
 #region // dash
-// check for dash input
+// verifica o input do dash
 if keyboard_check_pressed(vk_shift) && dash_ready {
-    // set the dash timer
+    // define o timer do dash
     dash_timer = dash_duration;
-    // set the dash direction
+    // define a direção do dash
     if keyboard_check(vk_right) {
         hspd = dash_speed;
     } else if keyboard_check(vk_left) {
         hspd = -dash_speed;
     }
-    // set the dash cooldown
+    // define o cooldown do dash
     dash_ready = false;
     alarm[0] = dash_cooldown;
 }
 
-// update dash
+// atualiza o dash
 if dash_timer > 0 {
-    // move the player
-    x += hspd;
-    // decrease the dash timer
+    // move o player
+	applygrav = false;
+	vspd = 0;
+	x += hspd * 3;
+    // dimiinui a duração do dash
     dash_timer--;
-    // end the dash if the timer is up
+    // acado o dash se acabar o tempo
     if dash_timer <= 0 {
         hspd = 0;
+		applygrav = true;
     }
 }
 
-// update dash cooldown
+// atualiza o cooldown do dash
 if !dash_ready {
-    // decrease the cooldown timer
+    // diminui o contador do dash
     alarm[0]--;
-    // reset the dash if the cooldown is up
+    // reseta o alarme
     if alarm[0] <= 0 {
         dash_ready = true;
     }
