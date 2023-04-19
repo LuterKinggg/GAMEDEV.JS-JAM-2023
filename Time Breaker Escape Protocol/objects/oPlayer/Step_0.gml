@@ -94,6 +94,11 @@ if dashTimer > 0 {//---Checa se o dash ainda está acontecendo---
 		}
 		hspd = 0;
 	}
+	if place_meeting(x, y, oWall){//---Checa a colisão mais uma vez---
+		while place_meeting(x, y, oWall){
+			x -= sign(hspd);
+		}
+	}
     x += hspd;//---Move o player baseado na velocidade modificada pelo dash---
     dashTimer--;//---Faz o timer do dash funcionar---
     if dashTimer <= 0 {//---Para o dash quando o timer termina---
@@ -102,10 +107,9 @@ if dashTimer > 0 {//---Checa se o dash ainda está acontecendo---
 }
 #endregion
 
-#region
-
-if hspd = 0{
-	image_index = joao;
+if hspd = 0 and onGround{
+	sprite_index = sPlayerIdle;
 }
-
-#endregion
+if hspd != 0 and onGround{
+	sprite_index = sPlayer
+}

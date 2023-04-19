@@ -35,10 +35,11 @@
   },
   "resources": [
     {"id":{"name":"oCamera","path":"objects/oCamera/oCamera.yy",},},
+    {"id":{"name":"sPlayer","path":"sprites/sPlayer/sPlayer.yy",},},
     {"id":{"name":"ab3ce173_6efe_4f44_9c31_a940c196897b","path":"sprites/ab3ce173_6efe_4f44_9c31_a940c196897b/ab3ce173_6efe_4f44_9c31_a940c196897b.yy",},},
     {"id":{"name":"oPlayer","path":"objects/oPlayer/oPlayer.yy",},},
     {"id":{"name":"oWall","path":"objects/oWall/oWall.yy",},},
-    {"id":{"name":"sPlayer","path":"sprites/sPlayer/sPlayer.yy",},},
+    {"id":{"name":"sPlayerIdle","path":"sprites/sPlayerIdle/sPlayerIdle.yy",},},
     {"id":{"name":"sWall","path":"sprites/sWall/sWall.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
   ],
