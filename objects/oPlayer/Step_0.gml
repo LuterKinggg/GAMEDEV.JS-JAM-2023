@@ -10,7 +10,7 @@ onGround = place_meeting(x, y + 1, oWall);//---Checa se o jogador pode pular---
 canJump = false;//---Define se o jogador pode ou não pular---
 #endregion
 
-#region //Posições Úteis
+#region //Posições Úteis 
 //---Posições Úteis---
 foot = (y + (sprite_height/2) - 1);
 #endregion
@@ -29,6 +29,7 @@ if airTime < maxAirTime{//---Faz o jogador poder pular por um tempo após sair d
 } else { canJump = false; }
 
 if jump and canJump{//---Checa se o jogador tenta e pode pular---
+	audio_play_sound(sndJump,1,false);
 	vspd -= jumpHeight;//---Aplica a velocidade do pulo no movimento vertical---
 	canJump = false;
 }
@@ -107,9 +108,35 @@ if dashTimer > 0 {//---Checa se o dash ainda está acontecendo---
 }
 #endregion
 
+#region // Animações
 if hspd = 0 and onGround{
 	sprite_index = sPlayerIdle;
 }
 if hspd != 0 and onGround{
 	sprite_index = sPlayer
 }
+#endregion
+
+#region // Paralaxe
+if hspd < 0 { //--Se andar para esquerda o cenario vai para a direita
+	layer_hspeed(layer3, 0.1);
+	layer_hspeed(layer4, 0.3);
+	layer_hspeed(layer5, 0.6);
+	layer_hspeed(layer6, 0.9);
+}
+
+if hspd > 0 { //--Se andar para direita o cenario vai para esquerda
+	layer_hspeed(layer3, -0.1);
+	layer_hspeed(layer4, -0.3);
+	layer_hspeed(layer5, -0.6);
+	layer_hspeed(layer6, -0.9);
+}
+
+if hspd = 0 { //--Se estiver parado o cenario não anda
+	layer_hspeed(layer3, 0);
+	layer_hspeed(layer4, 0);
+	layer_hspeed(layer5, 0);
+	layer_hspeed(layer6, 0);
+}
+
+#endregion
