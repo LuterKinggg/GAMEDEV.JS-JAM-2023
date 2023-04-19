@@ -1,9 +1,4 @@
 {
   "FolderOrderSettings": [],
-  "ResourceOrderSettings": [
-    {"name":"oDash","order":1,"path":"objects/oDash/oDash.yy",},
-    {"name":"sPlayer","order":1,"path":"sprites/sPlayer/sPlayer.yy",},
-    {"name":"sWall","order":2,"path":"sprites/sWall/sWall.yy",},
-    {"name":"sDash","order":3,"path":"sprites/sDash/sDash.yy",},
-  ],
+  "ResourceOrderSettings": [],
 }

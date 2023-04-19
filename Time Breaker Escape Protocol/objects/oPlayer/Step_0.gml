@@ -5,28 +5,32 @@
 right = keyboard_check(vk_right) or keyboard_check(ord("D"));//---Checa se o jogador aperta pra direita---
 left = keyboard_check(vk_left) or keyboard_check(ord("A"));//---Checa se o jogador aperta pra esquesda---
 jump = keyboard_check_pressed(vk_space) or keyboard_check_pressed(vk_up);//---Checa se o jogador aperta pra pular---
+dash = keyboard_check_pressed(vk_shift);//---Checa se o jogador aperta para executar o dash---
 onGround = place_meeting(x, y + 1, oWall);//---Checa se o jogador pode pular---
 canJump = false;//---Define se o jogador pode ou não pular---
 #endregion
 
 #region //Posições Úteis
 //---Posições Úteis---
-foot = (y + (sprite_height/2));
+foot = (y + (sprite_height/2) - 1);
 #endregion
 
 #region //Movimento Vertical
 ///---------MOVIMENTO VERTICAL---------
-if applygrav == true {
-	vspd += grav;//---Aplica a gravidade ao personagem---
-}
+vspd += grav;//---Aplica a gravidade ao personagem---
 
 if onGround{//---Faz o jogador poder pular quando no chão---
-canJump = true;
-}
+	canJump = true;
+	airTime = 0;
+} else {airTime += 1;}//---Mantém guardado por quanto tempo o jogador já esteve no ar---
+
+if airTime < maxAirTime{//---Faz o jogador poder pular por um tempo após sair do chão---
+	canJump = true;
+} else { canJump = false; }
 
 if jump and canJump{//---Checa se o jogador tenta e pode pular---
-	vspd -= jumpHeight;
-	alarm[0] = 5;
+	vspd -= jumpHeight;//---Aplica a velocidade do pulo no movimento vertical---
+	canJump = false;
 }
 
 if (keyboard_check_released(vk_space) or keyboard_check_released(vk_up)) and (vspd < 0){//---Habilita pulos de tamannhos variados---
@@ -44,6 +48,10 @@ if vspd >= 100{//---Limita a velocidade de queda do personagem---
 vspd = 100;
 }
 
+if dashTimer > 0{//---Para a movimento vertical durante o dash---
+	vspd = 0;
+}
+
 y += vspd;//---Move o personagem verticalmente depois de calcular sua velocidade---
 #endregion
 
@@ -51,12 +59,12 @@ y += vspd;//---Move o personagem verticalmente depois de calcular sua velocidade
 ///---------MOVIMENTO HORIZOLTAL---------
 hspd = 0; //---Reseta a velocidade do personagem---
 
-if left{//---Checa se o personagem tenta andar pra esquerda---
+if left and !(dashTimer > 0){//---Checa se o personagem tenta e pode andar pra esquerda---
 	hspd -= walkspeed;
 	image_xscale = -1;
 }
 
-if right{//---Checa se o personagem tenta andar pra direita---
+if right and !(dashTimer > 0){//---Checa se o personagem tenta e pode andar pra direita---
 	hspd += walkspeed;
 	image_xscale = 1;
 }
@@ -71,49 +79,33 @@ if place_meeting(x + hspd, y, oWall){//---Checa a colisão com a parede horizont
 x += hspd;//---Move o personagem horizontalmente depois de calcular sua velocidade---
 #endregion
 
-#region // dash
-// verifica o input do dash
-if keyboard_check_pressed(vk_shift) && dash_ready {
-    // define o timer do dash
-    dash_timer = dash_duration;
-    // define a direção do dash
-    if keyboard_check(vk_right) {
-        hspd = dash_speed;
-    } else if keyboard_check(vk_left) {
-        hspd = -dash_speed;
-    }
-    // define o cooldown do dash
-    dash_ready = false;
-    alarm[0] = dash_cooldown;
+#region // Dash
+if dash and canDash {//---Checa se o jogador tenta e pode executar um dash---
+    dashTimer = dashDuration;//---Define a duração do dash---
+    canDash = false;//---Previne o jogador de executatar um dash após o outro---
+    alarm[1] = dashCooldown;//---Define o tempo de espera entre cada dash---
 }
 
-// atualiza o dash
-if dash_timer > 0 {
-    // move o player
-	applygrav = false;
-	vspd = 0;
-	x += hspd * 3;
-	if place_meeting(x, y, oWall){
-		while place_meeting(x, y, oWall){
-			x -= hspd;
+if dashTimer > 0 {//---Checa se o dash ainda está acontecendo---
+	hspd = dashSpeed * image_xscale;//---Muda a direção do dash dependendo da direção do player e aplica a velocidade correta---
+	if place_meeting(x + hspd, y, oWall){//---Checa a colisão horizontal novamente para prevenir wallclips---
+		while (!place_meeting(x + sign(hspd), y, oWall)){
+			x += sign(hspd);
 		}
+		hspd = 0;
 	}
-    // dimiinui a duração do dash
-    dash_timer--;
-    // acado o dash se acabar o tempo
-    if dash_timer <= 0 {
+    x += hspd;//---Move o player baseado na velocidade modificada pelo dash---
+    dashTimer--;//---Faz o timer do dash funcionar---
+    if dashTimer <= 0 {//---Para o dash quando o timer termina---
         hspd = 0;
-		applygrav = true;
     }
+}
+#endregion
+
+#region
+
+if hspd = 0{
+	image_index = joao;
 }
 
-// atualiza o cooldown do dash
-if !dash_ready {
-    // diminui o contador do dash
-    alarm[0]--;
-    // reseta o alarme
-    if alarm[0] <= 0 {
-        dash_ready = true;
-    }
-}
 #endregion

@@ -2,13 +2,14 @@
 
 hspd = 0;//---Define a velocidade horizontal do personagem no momento---
 vspd = 0;//---Define a velocidade vertical do personagem no momento---
-walkspeed = 4;//---Define a velocidade básica do andar do personagem---
-grav = 1.5;//---Define a gravidade---
-jumpHeight = 16;//---Define a altura do pulo---
-applygrav = true; //---Aplica a gravidade
+walkspeed = 8;//---Define a velocidade básica do andar do personagem---
+grav = 2;//---Define a gravidade---
+jumpHeight = 22;//---Define a altura do pulo---
+maxAirTime = 3;//---Define o tempo máximo em frames que o jogador pode pular após sir o chão---
+airTime = 0;//---Checa por quanto tempo o jogador já esteve no ar---
 
-dash_speed = 200; // the speed at which the player dashes
-dash_duration = 10; // the duration of the dash in frames
-dash_cooldown = 60; // the cooldown between dashes in frames
-dash_timer = 0; // the current frame of the dash
-dash_ready = true; // whether or not the dash is available
+dashSpeed = 20; //---Define a velocidade do dash---
+dashDuration = 50; //---Duração do dash em frames---
+dashCooldown = 20; //---Define o tempo de espera entre cada dash---
+dashTimer = 0; //---Define um timer que termina o dash---
+canDash = true; //---Define se o jogador pode opou não executar o dash---
