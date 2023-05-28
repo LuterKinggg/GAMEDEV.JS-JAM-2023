@@ -1,9 +1,0 @@
-{
-  "FolderOrderSettings": [],
-  "ResourceOrderSettings": [
-    {"name":"sPlayer","order":3,"path":"sprites/sPlayer/sPlayer.yy",},
-    {"name":"sBackground","order":1,"path":"sprites/sBackground/sBackground.yy",},
-    {"name":"sTileSet","order":4,"path":"sprites/sTileSet/sTileSet.yy",},
-    {"name":"sWall","order":2,"path":"sprites/sWall/sWall.yy",},
-  ],
-}
